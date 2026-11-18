@@ -83,6 +83,7 @@ $$
 
 Remember $PL(k)$ convergence means that for a random sequence of vectors $\{x^{(n)}\}$, $n \in \mathbb{N}$, $x^{(n)} \in \mathbb{R}^n$, $x \stackrel{PL(k)}{\to} X$ if:
 
+
 $$
 \lim_{n \to \infty} \frac{1}{n} \sum_{i=0}^n \psi(x_i^{(n)}) \stackrel{a.s.}{=} \mathbb{E}[\psi(X)] \quad \text{for every } \psi \in PL(k, 1).
 $$
@@ -91,8 +92,8 @@ Assume $\lim_{n \to \infty} \{ (\mathbf{z}^*, \mathbf{s}, \boldsymbol{\theta}^*)
 
 $$
 \begin{aligned}
-    \lim_{n \to \infty} \{(\boldsymbol{\theta}^*, \mathbf{r}_{t} - \boldsymbol{\theta}^*)\} &\stackrel{PL(2)}{=} (\Theta^*, R_{t}) \\
-    \lim_{n \to \infty} \{(\mathbf{z}^*, \mathbf{q}_{t} - \mathbf{z}^*)\} &\stackrel{PL(2)}{=} (Z^*, Q_{t})
+    \lim_{n \to \infty} \{(\boldsymbol{\theta}^{*}, \mathbf{r}_{t} - \boldsymbol{\theta}^*)\} &\stackrel{PL(2)}{=} (\Theta^*, R_{t}) \\
+    \lim_{n \to \infty} \{(\mathbf{z}^{*}, \mathbf{q}_{t} - \mathbf{z}^*)\} &\stackrel{PL(2)}{=} (Z^*, Q_{t})
 \end{aligned}
 $$
 
@@ -101,7 +102,7 @@ We have:
 $$
 \begin{aligned}
     R_t \sim \mathcal{N}(0, \tau_t^2), &\quad Q_t \sim \mathcal{N}(0, \mu_t^2), \\ 
-    Z_t = H(Q_t + Z^*, \bar{\delta}_t), &\quad \Theta_t = G(R_t + \Theta^*, \bar{\gamma}_t).
+    Z_t = H(Q_t + Z^*, \bar{\delta}_t), &\quad \Theta_t = G(R_t + \Theta^*, \bar{\gamma}_t)
 \end{aligned}
 $$
 
