@@ -83,7 +83,6 @@ $$
 
 Remember $PL(k)$ convergence means that for a random sequence of vectors $\{x^{(n)}\}$, $n \in \mathbb{N}$, $x^{(n)} \in \mathbb{R}^n$, $x \stackrel{PL(k)}{\to} X$ if:
 
-
 $$
 \lim_{n \to \infty} \frac{1}{n} \sum_{i=0}^n \psi(x_i^{(n)}) \stackrel{a.s.}{=} \mathbb{E}[\psi(X)] \quad \text{for every } \psi \in PL(k, 1).
 $$
@@ -92,8 +91,8 @@ Assume $\lim_{n \to \infty} \{ (\mathbf{z}^*, \mathbf{s}, \boldsymbol{\theta}^*)
 
 $$
 \begin{aligned}
-    \lim_{n \to \infty} \{(\boldsymbol{\theta}^{*}, \mathbf{r}_{t} - \boldsymbol{\theta}^*)\} &\stackrel{PL(2)}{=} (\Theta^*, R_{t}) \\
-    \lim_{n \to \infty} \{(\mathbf{z}^{*}, \mathbf{q}_{t} - \mathbf{z}^*)\} &\stackrel{PL(2)}{=} (Z^*, Q_{t})
+    \lim_{n \to \infty} \{(\boldsymbol{\theta}^*, \mathbf{r}_{t} - \boldsymbol{\theta}^*)\} &\stackrel{PL(2)}{=} (\Theta^*, R_{t}) \\
+    \lim_{n \to \infty} \{(\mathbf{z}^*, \mathbf{q}_{t} - \mathbf{z}^*)\} &\stackrel{PL(2)}{=} (Z^*, Q_{t})
 \end{aligned}
 $$
 
@@ -114,7 +113,21 @@ $$
 
 Finally, the State Evolution equations for the Hinge Loss are as follows ($\alpha := n/m$). Initialize $\mu_0$, $\check{\delta}_0$, and $Z^*, X^*$ follow the empirical distribution, with $Q_t \sim \mathcal{N}(0, \mu_t^2)$ and $R_t \sim \mathcal{N}(0, \tau_t^2)$.
 
-The variances are then tracked by the State Evolution. 
+The variances are then tracked by the State Evolution:
+
+$$
+\begin{aligned}
+    Z_t &= H(Q_t + Z^*, \bar{\delta}_t) \\
+    \bar{\nu}_t &= \frac{\bar{\delta}_t}{\mathbb{E}[H'(Q_t + Z^*, \bar{\delta}_t)]} \\ 
+    \bar{\gamma}_t &= \bar{\nu}_t - \bar{\delta}_t \\
+    \tau_t^2 &= \text{Var}\left( \frac{\bar{\nu}_t(Z_t - Z^*) - \bar{\delta}_t Q_t}{\bar{\gamma}_t} \right) \\
+    \Theta_t &= G(R_t + \Theta^*, \bar{\gamma}_t) \\
+    \bar{\eta}_t &= \frac{\bar{\gamma}_t}{\mathbb{E}[G'(R_t + \Theta^*, \bar{\gamma}_t)]} \\
+    \bar{\delta}_{t+1} &= \bar{\eta}_t - \bar{\gamma}_t \\ 
+    \mu_{t+1}^2 &= \text{Var}\left( \frac{\bar{\eta}_t(\Theta_t - \Theta^*) - \bar{\gamma}_t R_t}{\bar{\delta}_{t+1}}\right)
+\end{aligned}
+$$
+
 
 ## References
 
