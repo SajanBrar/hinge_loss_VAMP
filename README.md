@@ -2,7 +2,7 @@
 
 ## Analysis of the hinge loss using VAMP
 
-In this section we consider the Hinge-loss formulation of soft-margin SVM and formulate the VAMP algorithm and its State Evolution for this case.
+We consider the Hinge-loss formulation of soft-margin SVM and formulate the VAMP algorithm and its State Evolution for this case.
 
 Let $\mathbf{A} \in \mathbb{R}^{m \times n}$ be the data matrix, $\mathbf{y} \in \{-1, +1\}^m$ the output label vector, and $\mathbf{x}$ be the vector we want to learn.
 
@@ -113,51 +113,10 @@ $$
 
 Finally, the State Evolution equations for the Hinge Loss are as follows ($\alpha := n/m$). Initialize $\mu_0$, $\check{\delta}_0$, and $Z^*, X^*$ follow the empirical distribution, with $Q_t \sim \mathcal{N}(0, \mu_t^2)$ and $R_t \sim \mathcal{N}(0, \tau_t^2)$.
 
-The variances are then tracked by the State Evolution:
+The variances are then tracked by the State Evolution. 
 
-$$
-\begin{aligned}
-    Z_t &= H(Q_t + Z^*, \bar{\delta}_t) \\
-    \bar{\nu}_t &= \frac{\bar{\delta}_t}{\mathbb{E}[H'(Q_t + Z^*, \bar{\delta}_t)]} \\ 
-    \bar{\gamma}_t &= \bar{\nu}_t - \bar{\delta}_t \\
-    \tau_t^2 &= \text{Var}\left( \frac{\bar{\nu}_t(Z_t - Z^*) - \bar{\delta}_t Q_t}{\bar{\gamma}_t} \right) \\
-    \Theta_t &= G(R_t + \Theta^*, \bar{\gamma}_t) \\
-    \bar{\eta}_t &= \frac{\bar{\gamma}_t}{\mathbb{E}[G'(R_t + \Theta^*, \bar{\gamma}_t)]} \\
-    \bar{\delta}_{t+1} &= \bar{\eta}_t - \bar{\gamma}_t \\ 
-    \mu_{t+1}^2 &= \text{Var}\left( \frac{\bar{\eta}_t(\Theta_t - \Theta^*) - \bar{\gamma}_t R_t}{\bar{\delta}_{t+1}}\right)
-\end{aligned}
-$$
+## References
 
-Let $(\Theta^*, R_t) \sim \mathcal{N}\left(\mathbf{0}, \begin{bmatrix} \sigma_1^2 & \tilde{\sigma}_t \\ \tilde{\sigma}_t & \tau_t^2 \end{bmatrix} \right)$ and $(Z^*, Q_t) \sim \mathcal{N}\left(\mathbf{0}, \begin{bmatrix} \sigma_2^2 & \check{\sigma}_t \\ \check{\sigma}_t & \mu_t^2 \end{bmatrix} \right)$.
-
-It can be shown that (where $\mathrm{T}, \mathrm{B}, \mathrm{V}$ are defined below):
-
-$$
-\begin{aligned}
-    \mathbb{E}[G'(R_t + \Theta^*, \bar{\gamma}_t)] &= \mathbb{E}\left[ \frac{S^2}{S^2 + \lambda / \bar{\gamma}_t} \right] = \alpha\left(1 - \mathrm{T}\right) \\
-    \mu_{t+1}^2 &= \frac{1}{\bar{\delta}_{t+1}^2} \left[ \tau_{\perp}^2 \left( \bar{\eta}_t^2 \alpha(1 - 2\mathrm{T} + \mathrm{B}) - \bar{\gamma}_t^2 \right) + \sigma_1^2 \left( c^2\bar{\delta}_{t+1}^2 - 2c\bar{\delta}_{t+1}\bar{\eta}_t(c+1)u(1-\mathrm{T}) + \bar{\eta}_t^2(c+1)^2 u^2 \mathrm{V} \right) \right]
-\end{aligned}
-$$
-
-where $c = \tilde{\sigma}_t / \sigma_1^2$, $\tau_{\perp}^2 = \tau_t^2 - c \tilde{\sigma}_t$, $u = \lambda / \bar{\gamma}_t$, and $\mathrm{T}, \mathrm{B}, \mathrm{V}$ are the standard Marchenko-Pastur integral functions evaluated at $(\alpha, u)$.
-
-Let $X \in \mathbb{R}^{m \times n}$ have i.i.d. random entries. Eigenvalues of $Y = \frac{1}{n}XX^\top$ follow the Marchenko-Pastur Law (with $\alpha := n/m$). The following quantities show up in our analysis:
-
-$$
-\begin{aligned}
-    \mathrm{T} &:= \mathrm{T}\left(\alpha, \frac{\lambda}{\bar{\gamma}_t}\right) = \mathbb{E}\left[ \frac{\frac{\lambda}{\bar{\gamma}_t}}{\frac{\lambda}{\bar{\gamma}_t} + S^2} \right] \\
-    \mathrm{B} &:= \mathrm{B}\left(\alpha, \frac{\lambda}{\bar{\gamma}_t}\right) = \mathbb{E}\left[ \left( \frac{\frac{\lambda}{\bar{\gamma}_t}}{\frac{\lambda}{\bar{\gamma}_t} + S^2} \right)^2 \right] \\
-    \mathrm{V} &:= \mathrm{V}\left(\alpha, \frac{\lambda}{\bar{\gamma}_t}\right) = \mathbb{E}\left[ \frac{S^2}{\left(\frac{\lambda}{\bar{\gamma}_t} + S^2\right)^2} \right]
-\end{aligned}
-$$
-
-Additionally, it holds:
-
-$$
-\mathrm{B}(\alpha, u) = \mathrm{T}(\alpha, u) - u \frac{\partial}{\partial u} \mathrm{T}(\alpha, u), \qquad
-\mathrm{V}(\alpha, u) = \frac{\partial}{\partial u} \mathrm{T}(\alpha, u)
-$$
-
-$$
-\mathrm{T}(\alpha, u) = \frac{-1 + \alpha - u + \sqrt{(1 + u - \alpha)^2 + 4\alpha u}}{2\alpha}
-$$
+- [1] S. Rangan, P. Schniter, and A. K. Fletcher, "Vector Approximate Message Passing," *IEEE Transactions on Information Theory*, vol. 65, no. 10, pp. 6664–6679, Oct. 2019. Available on [arXiv:1610.03082](https://arxiv.org/abs/1610.03082).
+- [2] V. A. Marchenko and L. A. Pastur, "Distribution of eigenvalues for some sets of random matrices," *Matematicheskii Sbornik*, vol. 114, no. 4, pp. 507–536, 1967. Background and details available on [Wikipedia: Marchenko–Pastur distribution](https://en.wikipedia.org/wiki/Marchenko%E2%80%93Pastur_distribution).
+- [3] S. Rangan, A. K. Fletcher, and P. Schniter, "A Unifying Tutorial on Approximate Message Passing," arXiv preprint [arXiv:2105.02180](https://arxiv.org/abs/2105.02180), 2021.
